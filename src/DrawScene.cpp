@@ -214,7 +214,7 @@ void DrawSurface(CSurface *m_pSurface)
 
 	GLfloat vcoord[4][3];
 	int i, j, xyz;
-	int pointnum[2];
+	int pointnum[2]; //曲面在u、v方向离散点的数量
 	for (int uv = 0; uv < 2; uv++)
 	{
 		pointnum[uv] = m_pSurface->m_pointnum[uv];
@@ -228,7 +228,7 @@ void DrawSurface(CSurface *m_pSurface)
 	glColor3ub(0, 0, 255);
 	glBegin(GL_TRIANGLES);
 	// glBegin(GL_POINTS);
-	// 一个等参线间隔有两个逆时针三角形,i,j--i+1,j--i+1,j+1；i,j--i+1,j+1--i,j+1。
+	// 一个等参线间隔有两个逆时针三角形,(i,j)--(i+1,j)--(i+1,j+1)；(i,j)--(i+1,j+1)--(i,j+1)
 	for (i = 0; i < pointnum[0] - 1; i++)
 	{
 		for (j = 0; j < pointnum[1] - 1; j++)
@@ -241,6 +241,7 @@ void DrawSurface(CSurface *m_pSurface)
 				vcoord[3][xyz] = (GLfloat)m_pSurface->m_point[i][j + 1][xyz];
 			}
 
+			// 第一个三角
 			v3d1.set(vcoord[1][0] - vcoord[0][0], vcoord[1][1] - vcoord[0][1], vcoord[1][2] - vcoord[0][2]);
 			v3d2.set(vcoord[2][0] - vcoord[1][0], vcoord[2][1] - vcoord[1][1], vcoord[2][2] - vcoord[1][2]);
 			v3dnormal = v3d1 ^ v3d2;
@@ -250,6 +251,7 @@ void DrawSurface(CSurface *m_pSurface)
 			glVertex3f(vcoord[1][0], vcoord[1][1], vcoord[1][2]);
 			glVertex3f(vcoord[2][0], vcoord[2][1], vcoord[2][2]);
 
+			// 第二个三角
 			v3d1.set(vcoord[2][0] - vcoord[0][0], vcoord[2][1] - vcoord[0][1], vcoord[2][2] - vcoord[0][2]);
 			v3d2.set(vcoord[3][0] - vcoord[2][0], vcoord[3][1] - vcoord[2][1], vcoord[3][2] - vcoord[2][2]);
 			v3dnormal = v3d1 ^ v3d2;
