@@ -99,6 +99,44 @@ void CCurve::QuadraticBezierCurve()
 	m_pointnum = ptnumoneseg; // 绘制点的个数存放起来
 }
 
+void CCurve::CubicBezierCurve()
+{
+	float u, B03, B13, B23, B33;
+
+	this->m_ctrlvertexnum = 4;
+	int ptnumoneseg = 21; // 一段曲线用21个点来绘制，共20小段
+
+	for (int j = 0; j < m_ctrlvertexnum; j++) // 控制顶点初始化
+	{
+		m_ctrlvertexx[j] = 0;
+		m_ctrlvertexy[j] = 0;
+		m_ctrlvertexz[j] = 0;
+	}
+
+	// 给定控制顶点坐标(0,0,0), (0,100,0), (100,100,0), (150,50,0)
+    m_ctrlvertexy[1] = 100;
+
+	m_ctrlvertexx[2] = 100;
+	m_ctrlvertexy[2] = 100;
+
+    m_ctrlvertexx[3] = 150;
+	m_ctrlvertexy[3] = 250;
+
+	for (int i = 0; i < ptnumoneseg; i++)
+	{
+		u = float(i) / (ptnumoneseg - 1); // 参数，注意它是[0,1]之间的小数，因而只能用浮点数相除
+		B03 = (1 - u) * (1 - u)  *(1 - u);		  // 基函数
+		B13 = 3.0f * (1 - u)* (1 - u) * u;
+		B23 = 3.0f * (1 - u)* u * u;
+        B33 = u * u * u;
+
+		m_pointx[i] = B03 * m_ctrlvertexx[0] + B13 * m_ctrlvertexx[1] + B23 * m_ctrlvertexx[2] + B33 * m_ctrlvertexx[3]; // 曲线上的点
+		m_pointy[i] = B03 * m_ctrlvertexy[0] + B13 * m_ctrlvertexy[1] + B23 * m_ctrlvertexy[2] + B33 * m_ctrlvertexy[3];
+		m_pointz[i] = B03 * m_ctrlvertexz[0] + B13 * m_ctrlvertexz[1] + B23 * m_ctrlvertexz[2] + B33 * m_ctrlvertexz[3];
+	}
+	m_pointnum = ptnumoneseg; // 绘制点的个数存放起来
+}
+
 void CCurve::QuadraticBezierCurveByClick()
 {
 	float u, B02, B12, B22; // 变量定义

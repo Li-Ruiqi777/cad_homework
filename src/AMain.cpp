@@ -87,7 +87,7 @@ void Display(void)
 		// case 2 Polynomial Curve
 		DrawScene(2, cCurve);
 	}
-	else if (Menu == 3 || Menu == 4 || Menu == 5 || Menu == 6)
+	else if (Menu == 3 || Menu == 4 || Menu == 5 || Menu == 6 || Menu==10)
 	{
 		// case 3 or 4 or 5 Bezier Curve
 		DrawScene(3, cCurve);
@@ -255,6 +255,16 @@ void ProcessMenu(int value)
 		cSurface->BiQuadraticBezierSurface();
 		Menu = 9;
 		break;
+	case 10:
+		if (cCurve == NULL)
+		{
+			cCurve = new CCurve;
+		}
+		cCurve->CubicBezierCurve();
+		cCamera.SetViewType(VIEW_TOP);
+		cCamera.ZoomAll(-200, -200, -200, 200, 200, 200);
+		Menu = 10;
+		break;
 	default:
 		break;
 	}
@@ -329,6 +339,7 @@ int main()
 	glutAddMenuEntry("鼠标点击绘制三次BSpline曲线", 7);
 	glutAddMenuEntry("读取文件绘制n次BSpline曲线", 8);
 	glutAddMenuEntry("绘制双二次Bezier曲面", 9);
+	glutAddMenuEntry("绘制3次Bezier曲线", 10);
 	glutAttachMenu(GLUT_RIGHT_BUTTON);
 
 	// 相机初始化位置设置

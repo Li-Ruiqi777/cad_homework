@@ -27,6 +27,7 @@ public:
 	void CubicPolynomialCurve();
 
 	void QuadraticBezierCurve();
+	void CubicBezierCurve();
 	void QuadraticBezierCurveByClick();
 	void ReadBezierCurveControlVertices(const char *filenamestr);
 	void QuadraticBezierCurveNPieces();
